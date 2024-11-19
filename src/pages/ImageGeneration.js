@@ -7,15 +7,18 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 const ImageGeneration = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [inputText, setInputText] = useState(location.state?.message || '');
   const [keyword] = useState(location.state?.keyword || '');
   const [style, setStyle] = useState(null);
   const [subject, setSubject] = useState(null);
   const [emotion, setEmotion] = useState(null);
   const [background, setBackground] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedImages, setGeneratedImages] = useState([]); // 여러 이미지를 저장하는 상태 추가
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 선택된 이미지 인덱스
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const translateCategory = (category, selection) => {
     const translations = {
@@ -57,11 +60,12 @@ const ImageGeneration = () => {
       return;
     }
 
+    setIsButtonDisabled(true);
     setIsLoading(true);
 
     const requestData = {
       style: translateCategory('style', style),
-      keyword: keyword,
+      keyword,
       subject: translateCategory('subject', subject),
       emotion: translateCategory('emotion', emotion),
       background: translateCategory('background', background),
@@ -85,9 +89,9 @@ const ImageGeneration = () => {
         if (data.status === 'success') {
           const formattedImages = data.images.map((image) => ({
             original: `data:image/png;base64,${image}`,
-            thumbnail: `data:image/png;base64,${image}`, // 썸네일 추가
+            thumbnail: `data:image/png;base64,${image}`,
           }));
-          setGeneratedImages(formattedImages); // react-image-gallery에 맞는 포맷으로 저장
+          setGeneratedImages(formattedImages);
         } else {
           alert(data.message);
         }
@@ -98,6 +102,7 @@ const ImageGeneration = () => {
       })
       .finally(() => {
         setIsLoading(false);
+        setTimeout(() => setIsButtonDisabled(false), 5000);
       });
   };
 
@@ -128,8 +133,8 @@ const ImageGeneration = () => {
               <CategorySelector label="배경" options={['실내', '야외', '도시', '해변']} selected={background} onSelect={setBackground} />
             </div>
           </div>
-          <button onClick={handleSubmit} style={styles.generateButton} disabled={isLoading}>
-            {isLoading ? '생성 중...' : '이미지 생성'}
+          <button onClick={handleSubmit} style={styles.generateButton} disabled={isButtonDisabled}>
+            {isButtonDisabled ? '생성 중...' : '이미지 생성'}
           </button>
         </div>
         <div style={styles.column}>
@@ -138,15 +143,15 @@ const ImageGeneration = () => {
             {generatedImages.length > 0 ? (
               <ImageGallery
                 items={generatedImages}
-                onSlide={(currentIndex) => setCurrentImageIndex(currentIndex)} // 현재 슬라이드 인덱스 저장
+                onSlide={(currentIndex) => setCurrentImageIndex(currentIndex)}
               />
             ) : (
               <p>이미지를 생성하세요</p>
             )}
             <button
-              onClick={() => {  
+              onClick={() => {
                 if (generatedImages.length > 0) {
-                  const selectedImage = generatedImages[currentImageIndex]; // 현재 선택된 이미지 추출
+                  const selectedImage = generatedImages[currentImageIndex];
                   navigate('/', { state: { message: inputText, generatedImage: selectedImage.original } });
                 } else {
                   alert('이미지를 먼저 생성해주세요.');
@@ -248,36 +253,17 @@ const styles = {
     color: '#333',
     textAlign: 'center',
   },
-  generatedImage: {
-    maxWidth: "100%",
-    maxHeight: "300px", // 높이 제한
-    borderRadius: "8px",
-    objectFit: "contain",
-  },
-  generatedImage: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    borderRadius: "8px",
-    objectFit: "contain",
-  },
   useButton: {
-    padding: "12px 24px",
-    fontSize: "16px",
-    fontWeight: "600",
-    cursor: "pointer",
-    backgroundColor: "#4A90E2",
-    color: "#FFFFFF",
-    border: "none",
-    borderRadius: "8px",
-    alignSelf: "center",
-    marginTop: "20px",
-    transition: "background-color 0.3s, transform 0.2s",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-  },
-  useButtonHover: {
-    backgroundColor: "#357ABD",
-    transform: "translateY(-2px)",
-    boxShadow: "0 4px 8px rgba(53, 122, 189, 0.3)",
+    padding: '12px 24px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    backgroundColor: '#4A90E2',
+    color: '#FFFFFF',
+    border: 'none',
+    borderRadius: '8px',
+    alignSelf: 'center',
+    marginTop: '20px',
   },
 };
 

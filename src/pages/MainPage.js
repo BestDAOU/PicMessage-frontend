@@ -11,17 +11,22 @@ const MainPage = () => {
   // 전달된 state에서 메시지와 이미지를 추출
   const messageFromState = location.state?.message || "";
   const [message, setMessage] = useState(messageFromState);
-  const generatedImage = location.state?.generatedImage || null;
+  const generatedImage = location.state?.generatedImage || null; // Retrieve the generated image URL
+  const [convertedTexts, setConvertedTexts] = useState({}); // 수신자별 메시지 상태
+  const [selectedContacts, setSelectedContacts] = useState([]); // 선택된 연락처 목록
+  const [currentContactIndex, setCurrentContactIndex] = useState(0); //현재 어떤 수신자인지 인덱스 표시
 
+  // 메시지에서 키워드를 추출하는 함수
   const extractKeywords = async (message) => {
     try {
       const prompt = `
-Please extract one single keyword in English from the following message that can be used for image generation.
+        Please extract one single keyword in English from the following message that can be used for image generation.
 
-메시지: ${message}
+        메시지: ${message}
 
-키워드:
-`;
+        키워드:
+      `;
+
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -93,12 +98,68 @@ Please extract one single keyword in English from the following message that can
       <div style={styles.row}>
         <div style={styles.section}>
           <label style={styles.label}>메시지</label>
-          <textarea
-            style={styles.textArea}
-            placeholder="메시지를 입력하세요"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          ></textarea>
+          {selectedContacts.length > 0 ? (
+            <>
+              {/* 현재 선택된 연락처의 변환된 메시지 표시 */}
+              <textarea
+                style={styles.textArea}
+                value={
+                  convertedTexts[selectedContacts[currentContactIndex]?.id] ||
+                  message
+                }
+                onChange={(e) => {
+                  const updatedMessage = e.target.value;
+                  setConvertedTexts((prev) => ({
+                    ...prev,
+                    [selectedContacts[currentContactIndex]?.id]: updatedMessage,
+                  }));
+                }}
+              ></textarea>
+
+              {/* 현재 수신자 인덱스 및 이름 표시 */}
+              <p style={styles.contactInfo}>
+                {`수신자 ${currentContactIndex + 1} / ${
+                  selectedContacts.length
+                } : ${selectedContacts[currentContactIndex].name}`}
+              </p>
+
+              {/* 이전/다음 버튼 */}
+              <div style={styles.navigationButtons}>
+                <button
+                  style={styles.navButton}
+                  disabled={currentContactIndex === 0}
+                  onClick={() =>
+                    setCurrentContactIndex((prevIndex) =>
+                      Math.max(prevIndex - 1, 0)
+                    )
+                  }
+                >
+                  이전
+                </button>
+                <button
+                  style={styles.navButton}
+                  disabled={currentContactIndex === selectedContacts.length - 1}
+                  onClick={() =>
+                    setCurrentContactIndex((prevIndex) =>
+                      Math.min(prevIndex + 1, selectedContacts.length - 1)
+                    )
+                  }
+                >
+                  다음
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* 선택된 연락처가 없을 경우 기본 메시지 입력 */}
+              <textarea
+                style={styles.textArea}
+                placeholder="메시지를 입력하세요"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></textarea>
+            </>
+          )}
           <button
             style={styles.button}
             onClick={() => navigate("/message-generation")}
@@ -126,7 +187,15 @@ Please extract one single keyword in English from the following message that can
         </div>
       </div>
 
-      <ContactList message={message} setMessage={setMessage} />
+      {/* 주소록 */}
+      <ContactList
+        message={message}
+        setMessage={setMessage}
+        convertedTexts={convertedTexts}
+        setConvertedTexts={setConvertedTexts}
+        selectedContacts={selectedContacts}
+        setSelectedContacts={setSelectedContacts}
+      />
 
       <div style={styles.container}>
         <button
@@ -143,6 +212,34 @@ Please extract one single keyword in English from the following message that can
 };
 
 const styles = {
+  navigationButtons: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "10px",
+    gap: "20px", // 버튼 간격 추가
+  },
+  navButton: {
+    backgroundColor: "#007BFF",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  contactName: {
+    marginTop: "10px",
+    fontSize: "18px",
+    fontWeight: "bold",
+  },
+  contactInfo: {
+    marginTop: "10px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#555",
+  },
+  // 기존 스타일 정의
   container: {
     margin: "85px",
     backgroundColor: "white",

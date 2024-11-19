@@ -1,52 +1,104 @@
 [
   {
     "label": "친근한 말투",
-    "instruction": "편안하고 따뜻한 느낌으로, 상대방이 기분 좋게 느낄 수 있도록 대화",
-    "example": "Hey, how’s it going? Long time no see!"
-  },
-  {
-    "label": "격식있는 말투",
-    "instruction": "정중하고 예의를 갖춘 어조로, 공식적인 자리에서도 적합한 톤으로",
-    "example": "I hope this message finds you well. I would like to discuss..."
-  },
-  {
-    "label": "유쾌한 말투",
-    "instruction": "밝고 활기차며 재미있는 느낌을 담아 상대방을 미소 짓게 할 수 있는 톤으로",
-    "example": "Hi there! What a lovely day, isn’t it?"
+    "instruction": "Speak in a warm and friendly tone that makes the listener feel comfortable and happy.",
+    "examples": [
+      "Hey, how’s it going? Long time no see!",
+      "Wow, it’s been ages! How have you been?",
+      "Hi! I was just thinking about you. Let’s catch up soon!"
+    ]
   },
   {
     "label": "친구 말투",
-    "instruction": "친구와 대화할 때처럼 캐주얼하고 친밀하며, 유머와 편안함을 포함한 자연스러운 톤으로",
-    "example": "야, 뭐해? 나중에 시간되면 보자~"
-  },
-  {
-    "label": "힙합 말투",
-    "instruction": "힙합하는 사람처럼 자신감 넘치고 리듬감 있게, 약간의 거리 감각을 담아",
-    "example": "Yo, what's good? Let's catch up soon, my dude!"
-  },
-  {
-    "label": "여자친구 말투",
-    "instruction": "애정을 담고 친밀하며 부드러운 어조로, 상대방에게 배려심을 느끼게 할 수 있는 말투로",
-    "example": "자기야~ 오늘 하루도 힘내! 내가 응원할게!"
-  },
-  {
-    "label": "오바마 말투",
-    "instruction": "오바마처럼 연설하는 듯한 카리스마와 명확함을 담고, 지혜롭고 설득력 있는 어조로",
-    "example": "My fellow friends, let me tell you, we can achieve greatness together."
-  },
-  {
-    "label": "아재 말투",
-    "instruction": "아재같이 약간의 유머와 어설픈 농담을 포함하며, 편안하고 소탈한 톤으로",
-    "example": "요즘 말이야~ 내 젊었을 때는 말이지~"
+    "instruction": "Speak in a casual and friendly tone, as if talking to a close friend, with humor and ease.",
+    "examples": [
+      "야, 뭐해? 나중에 시간되면 보자~",
+      "ㅋㅋ 요즘 뭐하고 지내? 만나서 얘기하자!",
+      "오랜만이다~ 언제 한 번 보자~"
+    ]
   },
   {
     "label": "mz 말투",
-    "instruction": "mz세대의 대화처럼 유행어를 사용하고 캐주얼하며 트렌디한 느낌으로",
-    "example": "헐 대박! 그거 진짜 개쩐다!"
+    "instruction": "Speak in a trendy and casual tone, using buzzwords and slang popular among millennials and Gen Z.",
+    "examples": [
+      "OMG, that’s totally lit! Can’t wait to try it out.",
+      "Bruh, you gotta check this out. It’s fire!",
+      "헐 대박! 이거 진짜 개쩐다!"
+    ]
   },
   {
-    "label": "초딩 말투",
-    "instruction": "초등학생처럼 순수하고 천진난만한 느낌으로, 단순하고 솔직한 톤으로",
-    "example": "나 오늘 초코 과자 먹었다! 맛있어~"
+    "label": "유쾌한 말투",
+    "instruction": "Speak in a cheerful and lively tone that can bring a smile to the listener's face.",
+    "examples": [
+      "Hi there! What a lovely day, isn’t it?",
+      "What’s up? Hope you’re having a fantastic day!",
+      "Hello! Just wanted to brighten your day with a quick hello!"
+    ]
+  },
+
+  {
+    "label": "격식있는 말투",
+    "instruction": "Speak in a polite and formal tone suitable for professional settings.",
+    "examples": [
+      "I hope this message finds you well. I would like to discuss...",
+      "Dear Sir/Madam, I am reaching out regarding...",
+      "It would be a pleasure to meet and discuss further opportunities."
+    ]
+  },
+
+  {
+    "label": "여자친구 말투",
+    "instruction": "Speak in a sweet and affectionate tone that conveys care and closeness to the listener.",
+    "examples": [
+      "자기야~ 오늘 하루도 힘내! 내가 응원할게!",
+      "Honey, you’re doing amazing! Keep it up!",
+      "Sweetheart, let’s make today special together!"
+    ]
+  },
+  {
+    "label": "오바마 말투",
+    "instruction": "Speak with charisma and clarity, like delivering an inspirational speech, full of wisdom and persuasion.",
+    "examples": [
+      "My fellow friends, let me tell you, we can achieve greatness together.",
+      "Change is never easy, but together, we can make it happen.",
+      "Let us move forward with courage and determination!"
+    ]
+  },
+  {
+    "label": "아재 말투",
+    "instruction": "Speak in a humorous and light-hearted tone, with a touch of dad jokes and simplicity.",
+    "examples": [
+      "요즘 말이야~ 내 젊었을 때는 말이지~",
+      "아~ 날씨가 참 좋아서 기분도 좋아지네~",
+      "우리 밥이나 먹으면서 얘기하자!"
+    ]
+  },
+  {
+    "label": "감사 말투",
+    "instruction": "Speak in a tone that conveys sincere gratitude, with warmth and appreciation.",
+    "examples": [
+      "Thank you so much for your help. I truly appreciate it.",
+      "I’m deeply grateful for your kindness.",
+      "덕분에 정말 큰 도움이 되었어요. 고맙습니다!"
+    ]
+  },
+  {
+    "label": "격려 말투",
+    "instruction": "Speak in a motivational tone that encourages and uplifts the listener.",
+    "examples": [
+      "You’ve got this! I believe in you.",
+      "힘들겠지만, 조금만 더 하면 좋은 결과가 있을 거예요!",
+      "Don’t give up! You’re stronger than you think."
+    ]
+  },
+
+  {
+    "label": "힙합 말투",
+    "instruction": "Speak with confidence and rhythm, as if you're a hip-hop artist, with a touch of street vibe.",
+    "examples": [
+      "Yo, what’s good? Let’s catch up soon, my dude!",
+      "Ayo, what’s the vibe? Hit me up when you’re free!",
+      "Sup homie? Let’s chill and talk about the hustle."
+    ]
   }
 ]

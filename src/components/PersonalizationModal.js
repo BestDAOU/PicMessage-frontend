@@ -72,16 +72,25 @@ const PersonalizationModal = ({
       return;
     }
 
-    const { instruction, example } = selectedToneData;
+    const { instruction, examples } = selectedToneData;
+
+    // 모든 예시를 프롬프트에 포함
+    const examplesText = examples
+      .map((example, index) => `Example ${index + 1}: "${example}"`)
+      .join("\n");
 
     const prompt = `
-    Please rewrite the following message in a tone that is ${instruction}.
-    The message should reflect the person's characteristics, notes, and the given example.
+    Please rewrite the following message in a tone that is described as follows:
+    "${instruction}"
+    The message should reflect the person's characteristics, notes, and the given examples.
+    The response must be written in Korean and should address the recipient by their name.
 
     Original message: "${textToConvert}"
+    Recipient's name: "${currentContact.name}"
     Tags: "${tag}"
     Memo: "${memo}"
-    Example for this tone: "${example}"
+    Examples for this tone:
+    ${examplesText}
   `;
     setLoading(true);
     try {
@@ -149,10 +158,19 @@ const PersonalizationModal = ({
               />
             </div>
             <div style={styles.inputGroup}>
-              <label>태그:</label>
+              <label>특징:</label>
               <input
                 type="text"
                 value={currentContact.tag}
+                readOnly
+                style={styles.inputField}
+              />
+            </div>
+            <div style={styles.inputGroup}>
+              <label>메모:</label>
+              <input
+                type="text"
+                value={currentContact.memo}
                 readOnly
                 style={styles.inputField}
               />
@@ -169,8 +187,8 @@ const PersonalizationModal = ({
                       ...styles.toneButton,
                       backgroundColor:
                         selectedTones[currentContact.id] === tone.instruction
-                          ? "#007bff"
-                          : "#ccc",
+                          ? "#4A90E2"
+                          : "#e1e5f2", // 선택되지 않은 경우 흰색
                       color:
                         selectedTones[currentContact.id] === tone.instruction
                           ? "white"
@@ -246,7 +264,6 @@ const PersonalizationModal = ({
     </div>
   );
 };
-
 const styles = {
   modalOverlay: {
     position: "fixed",
@@ -264,16 +281,17 @@ const styles = {
     backgroundColor: "white",
     padding: "30px",
     borderRadius: "12px",
-    width: "600px", // 모달창 너비를 더 넓게 설정
-    height: "700px", // 모달창 높이를 더 크게 설정
+    width: "600px", // 모달창 너비
+    height: "600px", // 모달창 높이
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     zIndex: 1001,
-    overflowY: "auto", // 내용이 넘칠 경우 스크롤 가능하도록 설정
+    overflowY: "auto",
   },
   title: {
     marginBottom: "20px",
     fontSize: "22px",
     fontWeight: "bold",
+    color: "#4A90E2", // 제목 색상
   },
   form: {
     display: "flex",
@@ -301,11 +319,12 @@ const styles = {
     gap: "5px",
   },
   toneButton: {
-    padding: "8px 10px",
-    borderRadius: "5px",
-    border: "none",
+    padding: "12px 12px",
+    border: "1px solid white",
+    borderRadius: "20px",
     cursor: "pointer",
-    transition: "background-color 0.3s",
+    backgroundColor: "#FFFFFF",
+    color: "black",
   },
   convertSection: {
     display: "flex",
@@ -316,14 +335,16 @@ const styles = {
   convertLabel: {
     fontSize: "16px",
     fontWeight: "bold",
+    color: "#4A90E2", // 라벨 색상
   },
   convertButton: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#4A90E2", // 버튼 색상
     color: "white",
     border: "none",
     padding: "8px 15px",
     borderRadius: "6px",
     cursor: "pointer",
+    transition: "background-color 0.3s",
   },
   textArea: {
     marginTop: "15px",
@@ -332,7 +353,7 @@ const styles = {
     borderRadius: "6px",
     border: "1px solid #ccc",
     width: "100%",
-    height: "300px", // 입력창 높이를 더 크게 설정
+    height: "300px", // 입력창 높이
     resize: "none",
     boxSizing: "border-box",
   },
@@ -343,7 +364,7 @@ const styles = {
     marginTop: "20px",
   },
   navButton: {
-    backgroundColor: "#66b2ff", // 연한 파란색
+    backgroundColor: "#4A90E2", // 네비게이션 버튼 색상
     color: "white",
     border: "none",
     padding: "10px 20px",
@@ -354,6 +375,7 @@ const styles = {
   pageInfo: {
     fontSize: "16px",
     fontWeight: "bold",
+    color: "#4A90E2", // 페이지 정보 색상
   },
   buttonGroup: {
     display: "flex",
@@ -371,7 +393,7 @@ const styles = {
     transition: "background-color 0.3s",
   },
   completeButton: {
-    backgroundColor: "#0056b3",
+    backgroundColor: "#4A90E2", // 완료 버튼 색상
     color: "white",
     border: "none",
     padding: "12px 20px",
