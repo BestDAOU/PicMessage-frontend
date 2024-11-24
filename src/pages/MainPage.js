@@ -1,12 +1,12 @@
 //src/pages/MainPage.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ContactList from "../components/ContactList";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import axios from "axios";
 import { DiFirebase } from "react-icons/di";
 import { sendMessages } from "../services/PpurioApiService";
-import SendAnimation from '../components/SendAnimation';
+import SendAnimation from "../components/SendAnimation";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -22,8 +22,7 @@ const MainPage = () => {
   const [isMessageHovered, setIsMessageHovered] = useState(false);
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // 메시지에서 키워드를 추출하는 함수
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림/닫힘 상태
   const extractKeywords = async (message) => {
     try {
       const prompt = `
@@ -94,7 +93,7 @@ const MainPage = () => {
 
   const handleSendButtonClick = async () => {
     const mergedData = mergePhoneAndMessages(); // 데이터 병합 (전화번호, 메시지, 이미지)
-
+    console.log("합친 데이터 " + mergedData);
     try {
       console.log(
         "Sending data to backend:",
@@ -267,6 +266,8 @@ const MainPage = () => {
           setConvertedTexts={setConvertedTexts}
           selectedContacts={selectedContacts}
           setSelectedContacts={setSelectedContacts}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
         />
         {/* 전송하기 버튼을 주소록 바로 아래에 배치 */}
         <div style={styles.sendButtonContainer}>

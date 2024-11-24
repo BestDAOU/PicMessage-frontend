@@ -20,10 +20,12 @@ const ContactList = ({
   setConvertedTexts,
   selectedContacts,
   setSelectedContacts,
+  isModalOpen,
+  setIsModalOpen,
 }) => {
   const tones = tonesobj;
   const navigate = useNavigate(); // navigate 훅 선언
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림/닫힘 상태
+
   const [activeTab, setActiveTab] = useState("찐친");
   const [expandedContactId, setExpandedContactId] = useState(null); // 세부사항이 확장된 연락처 ID
   const [isAllChecked, setIsAllChecked] = useState(false); // 전체 선택 상태를 저장하는 변수
@@ -42,7 +44,7 @@ const ContactList = ({
       group: "찐친",
       tag: "군대 동기. 최근에 집을 샀음. 최근에 아기가 생김.",
       memo: "내가 군대에서 부조리를 심하게 당했는데, 웅이가 도와줘서 고마움을 갖고 있음.",
-      tone: tones[0].label,
+      tone: tones[5].label,
     },
     {
       id: 2,
@@ -55,7 +57,7 @@ const ContactList = ({
       group: "찐친",
       tag: "대학 동기. 최근에 취업함.",
       memo: "대학 마지막 졸업 작품을 같이 했는데, 의견이 맞지 않아 싸워서 서로 어색해질 뻔했음.",
-      tone: tones[1].label,
+      tone: tones[5].label,
     },
     {
       id: 3,
@@ -67,7 +69,7 @@ const ContactList = ({
       group: "찐친",
       tag: "중학교 담임 선생님. 국어를 가르쳐주셨음. 항상 친절하게 가르쳐주심.",
       memo: "쉬는 시간마다 선생님께 질문을 자주 드렸는데, 열심히 한다고 초콜릿을 주셨음. 고등학교에 올라갈 때 선생님도 같은 고등학교로 오셔서 또 뵈었음.",
-      tone: tones[8].label,
+      tone: tones[5].label,
     },
     {
       id: 4,
@@ -79,7 +81,7 @@ const ContactList = ({
       group: "찐친",
       tag: "중학교 3학년 때 담임선생님. 과학을 가르쳐주셨음.",
       memo: "중학교 3학년 때 일본 교환학생을 전국에서 선출했었는데, 선생님께서 추천서를 작성해주셔서 전국 교환학생에 뽑혔다. 천체에 대해 배울 때 이해가 어려웠었는데, 선생님께서 지구본과 상세한 교구도구로 이해를 시켜주셨음.",
-      tone: tones[4].label,
+      tone: tones[5].label,
     },
     {
       id: 5,
@@ -91,7 +93,7 @@ const ContactList = ({
       group: "찐친",
       tag: "20학번 동기. 키가 정말 큼. 6년 사귄 여자친구가 있음. 사랑꾼이다.",
       memo: "학교에 밤 12시까지 둘이 남아서, 고급모바일 프로그래밍 UI설계서를 만들었다. 학교 근처 맛집인 나주곰탕집에서 서로의 연애사를 나누었음.",
-      tone: tones[1].label,
+      tone: tones[5].label,
     },
     {
       id: 6,
@@ -103,7 +105,7 @@ const ContactList = ({
       group: "찐친",
       tag: "22학번 후배. 대학교에서 처음으로 사귄 친구.",
       memo: "시험 기간마다 항상 같이 새벽까지 스터디를 했었다. 교내 테니스 대회에서 우승을 했었다.",
-      tone: tones[1].label,
+      tone: tones[5].label,
     },
     {
       id: 7,
@@ -115,7 +117,7 @@ const ContactList = ({
       group: "동아리",
       tag: "활발한 성격",
       memo: "다양한 취미를 가진 친구",
-      tone: tones[1].label,
+      tone: tones[5].label,
     },
   ]);
 
@@ -160,16 +162,8 @@ const ContactList = ({
       );
 
       if (alreadySelected) {
-        // 선택 해제
-        const updatedContacts = prevSelected.filter(
-          (selected) => selected.id !== contactId
-        );
-        setConvertedTexts((prevTexts) => {
-          const updatedTexts = { ...prevTexts };
-          delete updatedTexts[contactId]; // 해당 ID의 메시지 삭제
-          return updatedTexts;
-        });
-        return updatedContacts;
+        // 선택 해제 (convertedTexts는 삭제하지 않음)
+        return prevSelected.filter((selected) => selected.id !== contactId);
       } else {
         // 선택 추가
         setConvertedTexts((prevTexts) => ({
@@ -184,9 +178,8 @@ const ContactList = ({
   // 전체 체크박스 선택/해제 처리 함수
   const handleAllCheckboxChange = () => {
     if (isAllChecked) {
-      // 모든 선택 해제
+      // 모든 선택 해제 (convertedTexts 유지)
       setSelectedContacts([]);
-      setConvertedTexts({}); // 모든 메시지 초기화
     } else {
       // 모든 연락처 선택
       const allSelected = filteredContacts.map((contact) => contact);
@@ -195,8 +188,9 @@ const ContactList = ({
       setConvertedTexts((prevTexts) => {
         const newTexts = { ...prevTexts };
         allSelected.forEach((contact) => {
+          // 기존에 메시지가 없으면 기본 메시지 추가
           if (!newTexts[contact.id]) {
-            newTexts[contact.id] = message; // 기본 메시지 추가
+            newTexts[contact.id] = message;
           }
         });
         return newTexts;
@@ -309,6 +303,7 @@ const ContactList = ({
           convertedTexts={convertedTexts}
           setConvertedTexts={setConvertedTexts} // 수신자별 메시지를 업데이트
           onComplete={() => setIsModalOpen(false)} // 완료 후 모달 닫기
+          message={message}
         />
       )}
 
