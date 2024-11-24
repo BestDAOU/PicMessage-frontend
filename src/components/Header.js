@@ -49,23 +49,25 @@ const styles = {
     height: "60px",
   },
   brand: {
-    fontSize: "27px",
+    fontSize: "36px",
     fontWeight: "bold",
     color: "#4A90E2", // 부드러운 파란색으로 브랜드 이름 설정
-    marginLeft: "69px",
+    marginLeft: "90px",
   },
   rightSection: {
     display: "flex",
     alignItems: "center",
   },
   userName: {
-    fontSize: "24px",
-    fontWeight: "500", // 더 부드러운 굵기
-    color: "black",
-    whiteSpace: "nowrap",
-    marginRight: "70px",
-    fontFamily: "'Noto Sans KR', sans-serif", // Google Fonts 적용
-    letterSpacing: "0.5px", // 자간 조정으로 읽기 편하게
+    fontSize: "28px", // 약간 작은 크기로 세련되게
+    fontWeight: "500", // 부드러운 굵기로 조정
+    color: "#333333", // 약간 차분한 어두운 회색
+    whiteSpace: "nowrap", // 한 줄 유지
+    marginRight: "70px", // 여백 유지
+    fontFamily: "'Poppins', 'Noto Sans KR', sans-serif", // 세련된 Google Fonts 조합
+    letterSpacing: "0.8px", // 자간 약간 늘림
+    lineHeight: "1.2", // 줄 간격 조정
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)", // 약간의 그림자 효과
   },
 };
 

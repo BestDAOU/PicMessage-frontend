@@ -209,7 +209,9 @@ const styles = {
     padding: "10px",
     borderRadius: "8px",
     border: "1px solid #4A90E2",
-    fontSize: "16px",
+    fontSize: "18px",
+    fontFamily: "'Arial', sans-serif", // 폰트 설정
+    fontWeight: "bold", //bold로 설정
     resize: "none", // 크기 조절 불가능
   },
   keywordContainer: {
