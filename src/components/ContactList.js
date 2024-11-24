@@ -20,12 +20,10 @@ const ContactList = ({
   setConvertedTexts,
   selectedContacts,
   setSelectedContacts,
-  isModalOpen,
-  setIsModalOpen,
 }) => {
   const tones = tonesobj;
   const navigate = useNavigate(); // navigate 훅 선언
-
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림/닫힘 상태
   const [activeTab, setActiveTab] = useState("찐친");
   const [expandedContactId, setExpandedContactId] = useState(null); // 세부사항이 확장된 연락처 ID
   const [isAllChecked, setIsAllChecked] = useState(false); // 전체 선택 상태를 저장하는 변수
